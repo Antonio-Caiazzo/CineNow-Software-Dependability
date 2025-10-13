@@ -24,6 +24,15 @@ public class SalaDAOTest {
 
     private static void initializeTestData() {
         try (Connection conn = DataSourceSingleton.getInstance().getConnection()) {
+            conn.createStatement().execute("SET REFERENTIAL_INTEGRITY FALSE");
+            conn.createStatement().execute("DELETE FROM prenotazione");
+            conn.createStatement().execute("DELETE FROM proiezione");
+            conn.createStatement().execute("DELETE FROM slot");
+            conn.createStatement().execute("DELETE FROM sala");
+            conn.createStatement().execute("DELETE FROM film");
+            conn.createStatement().execute("DELETE FROM sede");
+            conn.createStatement().execute("SET REFERENTIAL_INTEGRITY TRUE");
+
             String insertData = """
                         INSERT INTO sede (id, nome, via, città, cap) VALUES 
                             (1, 'Sede 1', 'Via Roma', 'Napoli', '80100');

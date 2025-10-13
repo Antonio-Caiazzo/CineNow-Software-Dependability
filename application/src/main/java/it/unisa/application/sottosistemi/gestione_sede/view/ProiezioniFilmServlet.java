@@ -31,6 +31,12 @@ public class ProiezioniFilmServlet extends HttpServlet {
             Film film = filmDAO.retrieveById(filmId);
             Sede sede = sedeDAO.retrieveById(sedeId);
 
+            if (film == null || sede == null || programmazioneFilm == null || programmazioneFilm.isEmpty()) {
+                req.setAttribute("errorMessage", "Film o sede non trovati.");
+                req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
+                return;
+            }
+
             req.setAttribute("programmazioneFilm", programmazioneFilm);
             req.setAttribute("filmNome", film.getTitolo());
             req.setAttribute("sedeNome", sede.getNome());

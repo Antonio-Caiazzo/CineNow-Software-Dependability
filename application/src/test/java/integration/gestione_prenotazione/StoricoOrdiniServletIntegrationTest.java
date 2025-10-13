@@ -29,18 +29,28 @@ public class StoricoOrdiniServletIntegrationTest {
     static void setUpDatabase() throws Exception {
         DatabaseSetupForTest.configureH2DataSource();
         try (Connection conn = DataSourceSingleton.getInstance().getConnection()) {
+            conn.createStatement().execute("SET REFERENTIAL_INTEGRITY FALSE");
+            conn.createStatement().execute("DELETE FROM prenotazione");
+            conn.createStatement().execute("DELETE FROM proiezione");
+            conn.createStatement().execute("DELETE FROM slot");
+            conn.createStatement().execute("DELETE FROM sala");
+            conn.createStatement().execute("DELETE FROM film");
+            conn.createStatement().execute("DELETE FROM sede");
+            conn.createStatement().execute("DELETE FROM utente");
+            conn.createStatement().execute("DELETE FROM cliente");
+            conn.createStatement().execute("SET REFERENTIAL_INTEGRITY TRUE");
             conn.createStatement().execute("""
             INSERT INTO utente (email, password, ruolo) VALUES ('test@test.com', 'password', 'cliente');
             INSERT INTO cliente (email, nome, cognome) VALUES ('test@test.com', 'Mario', 'Rossi');
-            INSERT INTO sede (nome, via, città, cap) VALUES ('Sede Test', 'Via Roma', 'Roma', '00100');
-            INSERT INTO sala (id_sede, numero, capienza) VALUES (1, 1, 100);
-            INSERT INTO film (titolo, genere, classificazione, durata, descrizione, is_proiettato) 
-                VALUES ('Film di Test', 'Azione', 'T', 120, 'Descrizione del film', TRUE);
-            INSERT INTO slot (ora_inizio) VALUES ('18:00:00');
-            INSERT INTO proiezione (data, id_film, id_sala, id_orario) 
-                VALUES ('2025-01-01', 1, 1, 1);
-            INSERT INTO prenotazione (email_cliente, id_proiezione) 
-                VALUES ('test@test.com', 1);
+            INSERT INTO sede (id, nome, via, città, cap) VALUES (1, 'Sede Test', 'Via Roma', 'Roma', '00100');
+            INSERT INTO sala (id, id_sede, numero, capienza) VALUES (1, 1, 1, 100);
+            INSERT INTO film (id, titolo, genere, classificazione, durata, descrizione, is_proiettato) 
+                VALUES (1, 'Film di Test', 'Azione', 'T', 120, 'Descrizione del film', TRUE);
+            INSERT INTO slot (id, ora_inizio) VALUES (1, '18:00:00');
+            INSERT INTO proiezione (id, data, id_film, id_sala, id_orario) 
+                VALUES (1, '2025-01-01', 1, 1, 1);
+            INSERT INTO prenotazione (id, email_cliente, id_proiezione) 
+                VALUES (1, 'test@test.com', 1);
         """);
         }
     }

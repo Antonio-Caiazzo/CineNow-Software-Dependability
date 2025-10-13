@@ -37,15 +37,20 @@ class ProgrammazioneServiceTest {
         filmDAOSpy = spy(new FilmDAO());
         salaDAOSpy = spy(new SalaDAO());
         slotDAOSpy = spy(new SlotDAO());
-        programmazioneService = new ProgrammazioneService(proiezioneDAOMock);
+        programmazioneService = new ProgrammazioneService(proiezioneDAOMock, filmDAOSpy, salaDAOSpy, slotDAOSpy);
 
         try (Connection conn = DataSourceSingleton.getInstance().getConnection();
              Statement stmt = conn.createStatement()) {
+            stmt.execute("SET REFERENTIAL_INTEGRITY FALSE;");
+            stmt.execute("DELETE FROM prenotazione;");
             stmt.execute("DELETE FROM proiezione;");
             stmt.execute("DELETE FROM slot;");
             stmt.execute("DELETE FROM sala;");
             stmt.execute("DELETE FROM sede;");
             stmt.execute("DELETE FROM film;");
+            stmt.execute("DELETE FROM utente;");
+            stmt.execute("DELETE FROM cliente;");
+            stmt.execute("SET REFERENTIAL_INTEGRITY TRUE;");
             stmt.execute("INSERT INTO sede (id, nome, via, città, cap) VALUES (1, 'Movieplex', 'Via Roma', 'Napoli', '80100');");
             stmt.execute("INSERT INTO film (id, titolo, durata, genere, classificazione, descrizione, is_proiettato) " +
                     "VALUES (1, 'Sonic 3', 120, 'Azione', 'T', 'Descrizione di test', true);");
@@ -125,7 +130,7 @@ class ProgrammazioneServiceTest {
         int filmId = 1;
         int salaId = 1;
         List<Integer> slotIds = List.of(1, 2);
-        LocalDate data = LocalDate.of(2025, 1, 10);
+        LocalDate data = LocalDate.now().plusDays(10); // data futura
         System.out.println("Test Proiezione Aggiunta Con Successo - Input: film=Sonic 3, salaId=" + salaId + ", slotIds=" + slotIds + ", data=" + data);
         Film film = new Film();
         film.setId(filmId);

@@ -12,7 +12,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProgrammazioneSedeService {
-    private final ProiezioneDAO proiezioneDAO = new ProiezioneDAO();
+    private final ProiezioneDAO proiezioneDAO;
+
+    public ProgrammazioneSedeService() {
+        this.proiezioneDAO = new ProiezioneDAO();
+    }
+
+    public ProgrammazioneSedeService(ProiezioneDAO proiezioneDAO) {
+        this.proiezioneDAO = proiezioneDAO;
+    }
+
     public List<Proiezione> getProgrammazione(int sedeId) {
         List<Proiezione> programmazioni = proiezioneDAO.retrieveAllBySede(sedeId);
         LocalDate today = LocalDate.now();

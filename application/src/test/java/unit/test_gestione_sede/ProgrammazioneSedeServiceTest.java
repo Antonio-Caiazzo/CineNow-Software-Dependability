@@ -47,17 +47,23 @@ class ProgrammazioneSedeServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         populateDatabase();
+        service = new ProgrammazioneSedeService(proiezioneDAOMock);
     }
 
     private void populateDatabase() {
         try (Connection connection = DataSourceSingleton.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
             String dataInsertScript = """
+                SET REFERENTIAL_INTEGRITY FALSE;
+                DELETE FROM prenotazione;
                 DELETE FROM proiezione;
-                DELETE FROM film;
-                DELETE FROM sala;
-                DELETE FROM sede;
                 DELETE FROM slot;
+                DELETE FROM sala;
+                DELETE FROM film;
+                DELETE FROM sede;
+                DELETE FROM utente;
+                DELETE FROM cliente;
+                SET REFERENTIAL_INTEGRITY TRUE;
 
                 INSERT INTO sede (id, nome, via, città, cap) VALUES (1, 'Movieplex', 'Via Roma', 'Napoli', '80100');
                 INSERT INTO sala (id, id_sede, numero, capienza) VALUES (1, 1, 1, 100);
@@ -101,7 +107,7 @@ class ProgrammazioneSedeServiceTest {
         List<Proiezione> proiezioniMock = Collections.singletonList(
                 new Proiezione(1, new Sala(1), new Film(filmId, "Avatar", "Sci-fi", "T", 180, null, "Film di fantascienza", true), today.plusDays(1), null, new Slot(1))
         );
-        when(proiezioneDAOMock.retrieveByFilm(new Film(filmId), new Sede(sedeId))).thenReturn(proiezioniMock);
+        when(proiezioneDAOMock.retrieveByFilm(any(Film.class), any(Sede.class))).thenReturn(proiezioniMock);
         List<Proiezione> proiezioniFilm = service.getProiezioniFilm(filmId, sedeId);
         assertNotNull(proiezioniFilm, "Le proiezioni non dovrebbero essere null.");
         assertEquals(1, proiezioniFilm.size(), "Dovrebbe esserci una sola proiezione per il film.");
