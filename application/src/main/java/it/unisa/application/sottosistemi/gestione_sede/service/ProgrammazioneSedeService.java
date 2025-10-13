@@ -12,16 +12,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProgrammazioneSedeService {
-    private final ProiezioneDAO proiezioneDAO;
+    //@ spec_public
+    private final ProiezioneDAO proiezioneDAO = new ProiezioneDAO();
 
-    public ProgrammazioneSedeService() {
-        this.proiezioneDAO = new ProiezioneDAO();
-    }
-
-    public ProgrammazioneSedeService(ProiezioneDAO proiezioneDAO) {
-        this.proiezioneDAO = proiezioneDAO;
-    }
-
+    //@ public invariant proiezioneDAO != null;
+    /**
+     * Restituisce la programmazione futura della sede specificata.
+     */
+    /*@ public normal_behavior
+      @   requires sedeId >= 0;
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @*/
     public List<Proiezione> getProgrammazione(int sedeId) {
         List<Proiezione> programmazioni = proiezioneDAO.retrieveAllBySede(sedeId);
         LocalDate today = LocalDate.now();
@@ -40,6 +42,15 @@ public class ProgrammazioneSedeService {
 
 
 
+    /**
+     * Restituisce le proiezioni del film in una sede per la settimana corrente.
+     */
+    /*@ public normal_behavior
+      @   requires filmId >= 0;
+      @   requires sedeId >= 0;
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @*/
     public List<Proiezione> getProiezioniFilm(int filmId, int sedeId){
         List<Proiezione> proiezioni = proiezioneDAO.retrieveByFilm(new Film(filmId),new Sede(sedeId));
         return proiezioni.stream()
@@ -48,14 +59,23 @@ public class ProgrammazioneSedeService {
                 .collect(Collectors.toList());
 
     }
-  
+
+    /**
+     * Restituisce il catalogo dei film programmati in una sede.
+     */
+    /*@ public normal_behavior
+      @   requires sede != null;
+      @   requires sede.getId() >= 0;
+      @   assignable \nothing;
+      @   ensures \result == null || !\result.contains(null);
+      @*/
     public List<Film> getCatalogoSede(Sede sede){
         SedeDAO sedeDAO = new SedeDAO();
         List<Film> catalogo;
         try {
             catalogo = sedeDAO.retrieveFilm(sede.getId());
         } catch (SQLException e) {
-            return null;
+            throw new RuntimeException(e);
         }
         return catalogo;
     }

@@ -11,20 +11,53 @@ import it.unisa.application.utilities.PasswordHash;
 import jakarta.servlet.http.HttpSession;
 
 public class AutenticazioneService {
+    //@ spec_public
     private UtenteDAO utenteDAO;
-    private  ClienteDAO clienteDAO;
+    //@ spec_public
+    private ClienteDAO clienteDAO;
 
+    //@ public invariant utenteDAO != null;
+    //@ public invariant clienteDAO != null;
+
+    /**
+     * Costruttore di default del servizio di autenticazione.
+     */
+    /*@ public normal_behavior
+      @   requires true;
+      @   assignable utenteDAO, clienteDAO;
+      @   ensures this.utenteDAO != null;
+      @   ensures this.clienteDAO != null;
+      @*/
     public AutenticazioneService() {
         this.utenteDAO = new UtenteDAO();
         this.clienteDAO = new ClienteDAO();
     }
     /*Costruttore per il testing*/
+    /**
+     * Costruttore a iniezione per test.
+     */
+    /*@ public normal_behavior
+      @   requires utenteDAOMock != null;
+      @   requires clienteDAOMock != null;
+      @   assignable utenteDAO, clienteDAO;
+      @   ensures this.utenteDAO == utenteDAOMock;
+      @   ensures this.clienteDAO == clienteDAOMock;
+      @*/
     public AutenticazioneService(UtenteDAO utenteDAOMock, ClienteDAO clienteDAOMock) {
         this.utenteDAO = utenteDAOMock;
         this.clienteDAO = clienteDAOMock;
     }
 
 
+    /**
+     * Esegue il processo di autenticazione per l'utente con le credenziali fornite.
+     */
+    /*@ public normal_behavior
+      @   requires email != null && !email.isEmpty();
+      @   requires password != null && !password.isEmpty();
+      @   assignable \nothing;
+      @   ensures \result == null || \result.getEmail().equals(email);
+      @*/
     public Utente login(String email, String password) {
         Utente baseUser = utenteDAO.retrieveByEmail(email);
         if (baseUser == null) {
@@ -35,8 +68,8 @@ public class AutenticazioneService {
             return null;
         }
         if (baseUser.getRuolo().equalsIgnoreCase("cliente")) {
-            Cliente c = clienteDAO.retrieveByEmail(email, passHash);
-            return c;
+            return clienteDAO.retrieveByEmail(email, passHash);
+
         }
         if (baseUser.getRuolo().equalsIgnoreCase("gestore_sede")) {
             GestoreSede gs = new GestoreSede();
@@ -54,6 +87,14 @@ public class AutenticazioneService {
         return baseUser;
     }
 
+    /**
+     * Invalida la sessione corrente.
+     */
+    /*@ public normal_behavior
+      @   requires session != null;
+      @   assignable \nothing;
+      @   ensures true;
+      @*/
     public void logout(HttpSession session) {
         session.invalidate();
     }
