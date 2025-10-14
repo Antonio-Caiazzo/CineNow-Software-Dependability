@@ -11,11 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SedeDAO {
+    //@ spec_public
     private final DataSource ds;
+
+    //@ public invariant ds != null;
+
+    /*@ public normal_behavior
+      @   assignable ds;
+      @   ensures ds != null;
+      @*/
     public SedeDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+    /*@ public normal_behavior
+      @   requires id >= 0;
+      @   assignable \nothing;
+      @   ensures (\result != null) ==> (\result.getId() == id);
+      @*/
     public Sede retrieveById(int id) {
         String sql = "SELECT s.id, s.nome, s.via, s.città, s.cap FROM sede s WHERE s.id = ?";
         try (Connection connection = ds.getConnection();
@@ -32,6 +45,10 @@ public class SedeDAO {
         return null;
     }
 
+    /*@ public normal_behavior
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @*/
     public List<Sede> retrieveAll() {
         String sql = "SELECT * FROM sede";
         List<Sede> sedi = new ArrayList<>();
@@ -48,6 +65,11 @@ public class SedeDAO {
         return sedi;
     }
 
+    /*@ public normal_behavior
+      @   requires sedeId >= 0;
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @*/
     public List<Sala> retrieveSaleBySede(int sedeId) {
         List<Sala> sale = new ArrayList<>();
         String sql = "SELECT * FROM sala WHERE id_sede = ?";
@@ -68,6 +90,11 @@ public class SedeDAO {
         return sale;
     }
 
+    /*@ public normal_behavior
+      @   requires email != null && !email.isEmpty();
+      @   assignable \nothing;
+      @   ensures (\result != null) ==> (\result.getNome() != null && \result.getIndirizzo() != null && \result.getId() > 0);
+      @*/
     public Sede retrieveByGestoreEmail(String email) {
         String sql = "SELECT s.id, s.nome, s.via, s.città, s.cap FROM sede s JOIN gest_sede gs ON s.id = gs.id_sede WHERE gs.email = ?";
         try (Connection connection = ds.getConnection();
@@ -84,6 +111,12 @@ public class SedeDAO {
         return null;
     }
 
+    /*@ public normal_behavior
+      @   requires sedeId >= 0;
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @
+      @*/
     public List<Film> retrieveFilm(int sedeId) throws SQLException {
         List<Film> filmList = new ArrayList<>();
         String query = """

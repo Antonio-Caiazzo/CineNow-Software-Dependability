@@ -11,11 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalaDAO {
+    //@ spec_public
     private DataSource ds;
 
+    //@ public invariant ds != null;
+
+    /*@ public normal_behavior
+      @   assignable ds;
+      @   ensures this.ds != null;
+      @*/
     public SalaDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
+    /*@ public normal_behavior
+      @   requires id >= 0;
+      @   assignable \nothing;
+      @   ensures (\result != null) ==> \result.getId() == id;
+      @*/
     public Sala retrieveById(int id) {
         String sql = "SELECT * FROM sala WHERE id = ?";
         try (Connection connection = ds.getConnection();
@@ -37,6 +49,13 @@ public class SalaDAO {
         }
         return null;
     }
+    /*@ public normal_behavior
+      @   assignable \nothing;
+      @   ensures \result != null && !\result.contains(null);
+      @ also
+      @ public exceptional_behavior
+      @   signals (SQLException e) true;
+      @*/
     public List<Sala> retrieveAll() throws SQLException {
         List<Sala> sale = new ArrayList<>();
         String query = "SELECT * FROM sala";

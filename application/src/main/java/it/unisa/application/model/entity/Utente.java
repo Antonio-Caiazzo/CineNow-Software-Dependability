@@ -3,10 +3,26 @@ package it.unisa.application.model.entity;
 import java.util.Objects;
 
 public class Utente {
+    //@ spec_public
     private String email;
+    //@ spec_public
     private String password;
+    //@ spec_public
     private String ruolo;
 
+    //@ public invariant email == null || !email.isEmpty();
+    //@ public invariant password == null || !password.isEmpty();
+    //@ public invariant ruolo == null || !ruolo.isEmpty();
+
+    /*@ public normal_behavior
+      @   requires email != null && !email.isEmpty();
+      @   requires password != null && !password.isEmpty();
+      @   requires ruolo != null && !ruolo.isEmpty();
+      @   assignable *;
+      @   ensures this.email == email;
+      @   ensures this.password == password;
+      @   ensures this.ruolo == ruolo;
+      @*/
     public Utente(String email, String password,String ruolo) {
         this.email = email;
         this.password = password;
@@ -16,26 +32,53 @@ public class Utente {
     public Utente() {
     }
 
-    public String getEmail() {
+    /*@ public normal_behavior
+      @   assignable \nothing;
+      @   ensures \result == email;
+      @*/
+    public /*@ pure @*/ String getEmail() {
         return email;
     }
 
+    /*@ public normal_behavior
+      @   requires email != null && !email.isEmpty();
+      @   assignable email;
+      @   ensures this.email == email;
+      @*/
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    /*@ public normal_behavior
+      @   assignable \nothing;
+      @   ensures \result == password;
+      @*/
+    public /*@ pure @*/ String getPassword() {
         return password;
     }
 
+    /*@ public normal_behavior
+      @   requires password != null && !password.isEmpty();
+      @   assignable password;
+      @   ensures this.password == password;
+      @*/
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRuolo() {
+    /*@ public normal_behavior
+      @   assignable \nothing;
+      @   ensures \result == ruolo;
+      @*/
+    public /*@ pure @*/ String getRuolo() {
         return ruolo;
     }
 
+    /*@ public normal_behavior
+      @   requires ruolo != null && !ruolo.isEmpty();
+      @   assignable ruolo;
+      @   ensures this.ruolo == ruolo;
+      @*/
     public void setRuolo(String ruolo) {
         this.ruolo = ruolo;
     }

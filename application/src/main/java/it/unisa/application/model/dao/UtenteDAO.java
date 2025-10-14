@@ -9,12 +9,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UtenteDAO {
+    //@ spec_public
     private DataSource ds;
 
+    //@ public invariant ds != null;
+
+    /*@ public normal_behavior
+      @   assignable ds;
+      @   ensures ds != null;
+      @*/
     public UtenteDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+    /*@ public normal_behavior
+      @   requires utente != null;
+      @   requires utente.getEmail() != null && !utente.getEmail().isEmpty();
+      @   requires utente.getPassword() != null && !utente.getPassword().isEmpty();
+      @   requires utente.getRuolo() != null && !utente.getRuolo().isEmpty();
+      @   assignable \nothing;
+      @   ensures (\result==true) ==> utente.getEmail() != null && utente.getPassword() != null;
+      @*/
     public boolean create(Utente utente) {
         String sql = "INSERT INTO utente (email, password, ruolo) VALUES (?, ?, ?)";
         try (Connection conn = ds.getConnection();
@@ -29,10 +44,15 @@ public class UtenteDAO {
         }
     }
 
+    /*@ public normal_behavior
+      @   requires email != null && !email.isEmpty();
+      @   assignable \nothing;
+      @   ensures \result == null || \result.getEmail().equals(email);
+      @*/
     public Utente retrieveByEmail(String email) {
         String sql = "SELECT email, password, ruolo " +
-                     "FROM utente " +
-                     "WHERE email = ?";
+                "FROM utente " +
+                "WHERE email = ?";
         try (Connection conn = ds.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
