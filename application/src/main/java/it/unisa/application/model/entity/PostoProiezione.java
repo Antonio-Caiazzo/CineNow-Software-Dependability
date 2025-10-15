@@ -50,7 +50,8 @@ public class PostoProiezione {
       @   assignable \nothing;
       @   ensures \result == posto;
       @*/
-    public /*@ pure @*/ Posto getPosto() {
+    /*@ pure @*/
+    public  Posto getPosto() {
         return posto;
     }
 
@@ -66,7 +67,8 @@ public class PostoProiezione {
       @   assignable \nothing;
       @   ensures \result == proiezione;
       @*/
-    public /*@ pure @*/ Proiezione getProiezione() {
+    /*@ pure @*/
+    public  Proiezione getProiezione() {
         return proiezione;
     }
 
@@ -82,7 +84,8 @@ public class PostoProiezione {
       @   assignable \nothing;
       @   ensures \result == stato;
       @*/
-    public /*@ pure @*/ boolean isStato() {
+    /*@ pure @*/
+    public boolean isStato() {
         return stato;
     }
 

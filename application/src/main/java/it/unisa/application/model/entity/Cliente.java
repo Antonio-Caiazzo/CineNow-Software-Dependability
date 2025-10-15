@@ -44,7 +44,8 @@ public class Cliente extends Utente {
       @   assignable \nothing;
       @   ensures \result == nome;
       @*/
-    public /*@ pure @*/ String getNome() {
+    /*@ pure @*/
+    public String getNome() {
         return nome;
     }
 
@@ -60,7 +61,8 @@ public class Cliente extends Utente {
       @   assignable \nothing;
       @   ensures \result == cognome;
       @*/
-    public /*@ pure @*/ String getCognome() {
+    /*@ pure @*/
+    public String getCognome() {
         return cognome;
     }
 
@@ -76,7 +78,8 @@ public class Cliente extends Utente {
       @   assignable \nothing;
       @   ensures \result == prenotazioni && \result != null;
       @*/
-    public /*@ pure @*/ List<Prenotazione> storicoOrdini() {
+    /*@ pure @*/
+    public List<Prenotazione> storicoOrdini() {
         return prenotazioni;
     }
 
@@ -92,7 +95,7 @@ public class Cliente extends Utente {
     /*@ public normal_behavior
       @   requires prenotazioni != null;
       @   requires posti != null && proiezione != null;
-      @   assignable prenotazioni.*;
+      @   assignable this.prenotazioni;
       @   ensures prenotazioni.size() == \old(prenotazioni.size()) + 1;
       @*/
     public void aggiungiOrdine(List<PostoProiezione> posti, Proiezione proiezione) {

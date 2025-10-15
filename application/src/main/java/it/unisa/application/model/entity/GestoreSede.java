@@ -9,13 +9,15 @@ public class GestoreSede extends Utente {
       @   assignable \nothing;
       @   ensures \result == sede;
       @*/
-    public /*@ pure @*/ Sede getSede() {
+    /*@ pure @*/
+    public Sede getSede() {
         return sede;
     }
 
     /*@ public normal_behavior
       @   assignable this.sede;
       @   ensures this.sede == sede;
+
       @*/
     public void setSede(Sede sede) {
         this.sede = sede;

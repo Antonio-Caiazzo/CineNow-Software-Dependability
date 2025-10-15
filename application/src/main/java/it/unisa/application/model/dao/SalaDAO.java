@@ -17,7 +17,6 @@ public class SalaDAO {
     //@ public invariant ds != null;
 
     /*@ public normal_behavior
-      @   assignable ds;
       @   ensures this.ds != null;
       @*/
     public SalaDAO() {

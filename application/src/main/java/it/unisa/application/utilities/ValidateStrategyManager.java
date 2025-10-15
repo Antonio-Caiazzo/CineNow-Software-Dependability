@@ -16,7 +16,6 @@ public class ValidateStrategyManager {
      */
     /*@ public normal_behavior
       @   requires true;
-      @   assignable validators;
       @   ensures this.validators != null;
       @   ensures this.validators.isEmpty();
       @*/

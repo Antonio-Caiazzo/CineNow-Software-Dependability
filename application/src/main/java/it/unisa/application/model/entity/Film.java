@@ -54,7 +54,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == id;
       @*/
-    public /*@ pure @*/ int getId() { return id; }
+    /*@ pure @*/
+    public int getId() { return id; }
 
     /*@ public normal_behavior
       @   assignable this.id;
@@ -66,7 +67,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == titolo;
       @*/
-    public /*@ pure @*/ String getTitolo() { return titolo; }
+    /*@ pure @*/
+    public String getTitolo() { return titolo; }
 
     /*@ public normal_behavior
       @   assignable this.titolo;
@@ -78,7 +80,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == genere;
       @*/
-    public /*@ pure @*/ String getGenere() { return genere; }
+    /*@ pure @*/
+    public String getGenere() { return genere; }
 
     /*@ public normal_behavior
       @   assignable this.genere;
@@ -90,7 +93,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == classificazione;
       @*/
-    public /*@ pure @*/ String getClassificazione() { return classificazione; }
+    /*@ pure @*/
+    public String getClassificazione() { return classificazione; }
 
     /*@ public normal_behavior
       @   assignable this.classificazione;
@@ -102,7 +106,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == durata;
       @*/
-    public /*@ pure @*/ int getDurata() { return durata; }
+    /*@ pure @*/
+    public int getDurata() { return durata; }
 
     /*@ public normal_behavior
       @   assignable this.durata;
@@ -114,7 +119,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == locandina;
       @*/
-    public /*@ pure @*/ byte[] getLocandina() { return locandina; }
+    /*@ pure @*/
+    public byte[] getLocandina() { return locandina; }
 
     /*@ public normal_behavior
       @   assignable this.locandina;
@@ -126,7 +132,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == descrizione;
       @*/
-    public /*@ pure @*/ String getDescrizione() { return descrizione; }
+    /*@ pure @*/
+    public String getDescrizione() { return descrizione; }
 
     /*@ public normal_behavior
       @   assignable this.descrizione;
@@ -138,7 +145,8 @@ public class Film {
       @   assignable \nothing;
       @   ensures \result == isProiettato;
       @*/
-    public /*@ pure @*/ boolean isProiettato() { return isProiettato; }
+    /*@ pure @*/
+    public boolean isProiettato() { return isProiettato; }
 
     /*@ public normal_behavior
       @   assignable this.isProiettato;

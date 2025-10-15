@@ -17,7 +17,6 @@ public class SlotDAO {
 
     /*@ public normal_behavior
       @   requires true;
-      @   assignable this.ds;
       @   ensures this.ds != null;
       @*/
     public SlotDAO() {

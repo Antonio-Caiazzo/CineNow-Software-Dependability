@@ -2,7 +2,8 @@ package it.unisa.application.utilities;
 
 public class PasswordValidator implements ValidatorStrategy {
 
-    /*@ public normal_behavior
+    /*@ also
+      @ public normal_behavior
       @   requires campo != null;
       @   assignable \nothing;
       @   ensures \result ==> (campo.length() >= 8

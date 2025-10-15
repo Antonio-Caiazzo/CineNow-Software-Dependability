@@ -18,7 +18,6 @@ public class Utente {
       @   requires email != null && !email.isEmpty();
       @   requires password != null && !password.isEmpty();
       @   requires ruolo != null && !ruolo.isEmpty();
-      @   assignable *;
       @   ensures this.email == email;
       @   ensures this.password == password;
       @   ensures this.ruolo == ruolo;
@@ -36,13 +35,14 @@ public class Utente {
       @   assignable \nothing;
       @   ensures \result == email;
       @*/
-    public /*@ pure @*/ String getEmail() {
+    /*@ pure @*/
+    public String getEmail() {
         return email;
     }
 
     /*@ public normal_behavior
       @   requires email != null && !email.isEmpty();
-      @   assignable email;
+      @   assignable this.email;
       @   ensures this.email == email;
       @*/
     public void setEmail(String email) {
@@ -53,13 +53,14 @@ public class Utente {
       @   assignable \nothing;
       @   ensures \result == password;
       @*/
-    public /*@ pure @*/ String getPassword() {
+    /*@ pure @*/
+    public String getPassword() {
         return password;
     }
 
     /*@ public normal_behavior
       @   requires password != null && !password.isEmpty();
-      @   assignable password;
+      @   assignable this.password;
       @   ensures this.password == password;
       @*/
     public void setPassword(String password) {
@@ -70,13 +71,14 @@ public class Utente {
       @   assignable \nothing;
       @   ensures \result == ruolo;
       @*/
-    public /*@ pure @*/ String getRuolo() {
+    /*@ pure @*/
+    public String getRuolo() {
         return ruolo;
     }
 
     /*@ public normal_behavior
       @   requires ruolo != null && !ruolo.isEmpty();
-      @   assignable ruolo;
+      @   assignable this.ruolo;
       @   ensures this.ruolo == ruolo;
       @*/
     public void setRuolo(String ruolo) {

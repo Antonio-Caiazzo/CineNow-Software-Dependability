@@ -22,7 +22,6 @@ public class Slot {
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable *;
       @   ensures this.id == id;
       @   ensures this.oraInizio == null;
       @*/
@@ -35,13 +34,14 @@ public class Slot {
       @   assignable \nothing;
       @   ensures \result == oraInizio;
       @*/
-    public /*@ pure @*/ Time getOraInizio() {
+    /*@ pure @*/
+    public Time getOraInizio() {
         return oraInizio;
     }
 
     /*@ public normal_behavior
       @   requires oraInizio != null;
-      @   assignable oraInizio;
+      @   assignable this.oraInizio;
       @   ensures this.oraInizio == oraInizio;
       @*/
     public void setOraInizio(Time oraInizio) {
@@ -53,13 +53,14 @@ public class Slot {
       @   assignable \nothing;
       @   ensures \result == id;
       @*/
-    public /*@ pure @*/ int getId() {
+    /*@ pure @*/
+    public int getId() {
         return id;
     }
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable id;
+      @   assignable this.id;
       @   ensures this.id == id;
       @*/
     public void setId(int id) {

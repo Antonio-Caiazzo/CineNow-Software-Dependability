@@ -33,7 +33,6 @@ public class Sala {
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable *;
       @   ensures this.id == id;
       @*/
     public Sala(int id) {
@@ -44,13 +43,14 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == id;
       @*/
-    public /*@ pure @*/ int getId() {
+    /*@ pure @*/
+    public int getId() {
         return id;
     }
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable id;
+      @   assignable this.id;
       @   ensures this.id == id;
       @*/
     public void setId(int id) {
@@ -61,13 +61,14 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == numeroSala;
       @*/
-    public /*@ pure @*/ int getNumeroSala() {
+    /*@ pure @*/
+    public int getNumeroSala() {
         return numeroSala;
     }
 
     /*@ public normal_behavior
       @   requires numeroSala >= 0;
-      @   assignable numeroSala;
+      @   assignable this.numeroSala;
       @   ensures this.numeroSala == numeroSala;
       @*/
     public void setNumeroSala(int numeroSala) {
@@ -78,13 +79,14 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == capienza;
       @*/
-    public /*@ pure @*/ int getCapienza() {
+    /*@ pure @*/
+    public int getCapienza() {
         return capienza;
     }
 
     /*@ public normal_behavior
       @   requires capienza >= 0;
-      @   assignable capienza;
+      @   assignable this.capienza;
       @   ensures this.capienza == capienza;
       @*/
     public void setCapienza(int capienza) {
@@ -95,13 +97,14 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == sede;
       @*/
-    public /*@ pure @*/ Sede getSede() {
+    /*@ pure @*/
+    public Sede getSede() {
         return sede;
     }
 
     /*@ public normal_behavior
       @   requires sede != null;
-      @   assignable sede;
+      @   assignable this.sede;
       @   ensures this.sede == sede;
       @*/
     public void setSede(Sede sede) {
@@ -112,14 +115,15 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == slotList;
       @*/
-    public /*@ pure @*/ List<Slot> slotList() {
+    /*@ pure @*/
+    public List<Slot> slotList() {
         return slotList;
     }
 
     /*@ public normal_behavior
       @   requires slotList != null;
       @   requires !slotList.contains(null);
-      @   assignable slotList;
+      @   assignable this.slotList;
       @   ensures this.slotList == slotList;
       @*/
     public void setSlotList(List<Slot> slotList) {
@@ -131,14 +135,15 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == proiezioni;
       @*/
-    public /*@ pure @*/ List<Proiezione> getProiezioni() {
+    /*@ pure @*/
+    public List<Proiezione> getProiezioni() {
         return proiezioni;
     }
 
     /*@ public normal_behavior
       @   requires proiezioni != null;
       @   requires !proiezioni.contains(null);
-      @   assignable proiezioni;
+      @   assignable this.proiezioni;
       @   ensures this.proiezioni == proiezioni;
       @*/
     public void setProiezioni(List<Proiezione> proiezioni) {
@@ -150,14 +155,15 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == posti;
       @*/
-    public /*@ pure @*/ List<Posto> getPosti() {
+    /*@ pure @*/
+    public List<Posto> getPosti() {
         return posti;
     }
 
     /*@ public normal_behavior
       @   requires posti != null;
       @   requires !posti.contains(null);
-      @   assignable posti;
+      @   assignable this.posti;
       @   ensures this.posti == posti;
       @*/
     public void setPosti(List<Posto> posti) {
@@ -168,7 +174,8 @@ public class Sala {
       @   assignable \nothing;
       @   ensures \result == slotList;
       @*/
-    public /*@ pure @*/ List<Slot> getSlotList() {
+    /*@ pure @*/
+    public List<Slot> getSlotList() {
         return slotList;
     }
 
@@ -206,7 +213,7 @@ public class Sala {
         /*@ loop_invariant posti != null;
           @ loop_invariant this.posti != null;
           @ loop_invariant posti.size() <= this.posti.size();
-          @ loop_invariant (\forall int i; 0 <= i && i < nuoviPosti.size(); nuoviPosti.get(i) != null);
+          @ loop_invariant (\forall int i; 0 <= i && i < posti.size(); posti.get(i) != null);
           @ decreases this.posti.size() - posti.size();
           @*/
         for (Posto p : this.posti) {
