@@ -6,6 +6,7 @@ import it.unisa.application.model.dao.SlotDAO;
 import it.unisa.application.model.entity.Film;
 import it.unisa.application.model.entity.Proiezione;
 import it.unisa.application.model.entity.Slot;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,18 @@ public class SlotService {
     private final ProiezioneDAO proiezioneDAO = new ProiezioneDAO();
     private final FilmDAO filmDAO = new FilmDAO();
 
+    /**
+     * Calcola gli slot disponibili per un film all'interno di un intervallo di date.
+     */
+    /*@ public normal_behavior
+      @   requires filmId >= 0;
+      @   requires salaId >= 0;
+      @   requires dataInizio != null;
+      @   requires dataFine != null;
+      @   requires !dataFine.isBefore(dataInizio);
+      @   assignable \nothing;
+      @   ensures \result != null;
+      @*/
     public Map<String, Object> slotDisponibili(int filmId, int salaId, LocalDate dataInizio, LocalDate dataFine) throws Exception {
         Film film = filmDAO.retrieveById(filmId);
         if (film == null) {
@@ -26,10 +39,17 @@ public class SlotService {
         List<Map<String, Object>> calendar = new ArrayList<>();
         LocalDate current = dataInizio;
 
+        /*@ loop_invariant current != null;
+          @ loop_invariant !current.isBefore(dataInizio);
+          @*/
         while (!current.isAfter(dataFine)) {
             List<Slot> allSlots = slotDAO.retrieveAllSlots();
             List<Map<String, Object>> slotList = new ArrayList<>();
-            for (Slot slot : allSlots) {
+
+            /*@ loop_invariant 0 <= k && k <= allSlots.size();
+              @*/
+            for (int k = 0; k < allSlots.size(); k++) {
+                Slot slot = allSlots.get(k);
                 Proiezione existing = proiezioneDAO.retrieveProiezioneBySalaSlotAndData(salaId, slot.getId(), current);
                 Map<String, Object> slotData = new HashMap<>();
                 slotData.put("id", slot.getId());
@@ -45,7 +65,7 @@ public class SlotService {
             }
 
             Slot lastSlot = allSlots.get(allSlots.size() - 1);
-            int slotEndTime = lastSlot.getOraInizio().toLocalTime().toSecondOfDay() + (30 * 60); // Aggiungere 30 minuti
+            int slotEndTime = lastSlot.getOraInizio().toLocalTime().toSecondOfDay() + (30 * 60); // +30 minuti
 
             if (slotEndTime < (lastSlot.getOraInizio().toLocalTime().toSecondOfDay() + durata * 60)) {
                 Map<String, Object> lastSlotData = new HashMap<>();
@@ -63,5 +83,4 @@ public class SlotService {
         }
         return Map.of("durataFilm", durata, "calendar", calendar);
     }
-
 }

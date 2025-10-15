@@ -11,12 +11,27 @@ import java.util.List;
 import java.util.Map;
 
 public class PrenotazioneDAO {
+    //@ spec_public
     private final DataSource ds;
 
+    //@ public invariant ds != null;
+
+    /*@ public behavior
+      @   ensures ds != null;
+      @*/
     public PrenotazioneDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+    /*@ public normal_behavior
+      @   requires prenotazione != null;
+      @   requires prenotazione.getCliente() != null;
+      @   requires prenotazione.getCliente().getEmail() != null;
+      @   requires prenotazione.getProiezione() != null;
+      @   assignable prenotazione.*;
+      @   ensures ds == \old(ds);
+      @   ensures \result ==> (prenotazione.getId() >= 0);
+      @*/
     public boolean create(Prenotazione prenotazione) {
         String sql = "INSERT INTO prenotazione (email_cliente, id_proiezione) VALUES (?, ?)";
         try (Connection connection = ds.getConnection();
@@ -37,6 +52,12 @@ public class PrenotazioneDAO {
         return false;
     }
 
+    /*@ public normal_behavior
+      @   requires id >= 0;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures (\result != null) ==> (\result.getId() == id);
+      @*/
     public Prenotazione retrieveById(int id) {
         String sql = "SELECT * FROM prenotazione WHERE id = ?";
         try (Connection connection = ds.getConnection();
@@ -58,6 +79,14 @@ public class PrenotazioneDAO {
         return null;
     }
 
+    /*@ public normal_behavior
+      @   requires cliente != null;
+      @   requires cliente.getEmail() != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures \result != null;
+      @   ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+      @*/
     public List<Prenotazione> retrieveAllByCliente(Cliente cliente) {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         String sql = "SELECT " +
