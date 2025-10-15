@@ -1,6 +1,13 @@
 package it.unisa.application.utilities;
 
 public class EmailValidator implements ValidatorStrategy {
+
+    /*@ also public normal_behavior
+      @   requires true;
+      @   assignable \nothing;
+      @   ensures (campo == null) ==> !\result;
+      @   ensures \result ==> (campo != null);
+      @*/
     @Override
     public boolean validate(String campo) {
         if (campo == null) {

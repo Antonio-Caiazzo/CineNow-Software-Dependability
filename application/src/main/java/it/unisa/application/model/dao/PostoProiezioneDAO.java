@@ -12,12 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostoProiezioneDAO {
+    //@ spec_public
     private final DataSource ds;
 
+    //@ public invariant ds != null;
+
+    /*@ public behavior
+      @   ensures ds != null;
+      @*/
     public PostoProiezioneDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+    /*@ public normal_behavior
+      @   requires postoProiezione != null;
+      @   requires postoProiezione.getPosto() != null;
+      @   requires postoProiezione.getPosto().getSala() != null;
+      @   requires postoProiezione.getProiezione() != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @*/
     public boolean create(PostoProiezione postoProiezione) {
         String sql = "INSERT INTO posto_proiezione (id_sala, fila, numero, id_proiezione, stato) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = ds.getConnection();
@@ -34,6 +48,16 @@ public class PostoProiezioneDAO {
         return false;
     }
 
+
+    /*@ public normal_behavior
+      @   requires proiezione != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures \result != null;
+      @   ensures (\forall int i; 0 <= i && i < \result.size();
+      @               \result.get(i) != null &&
+      @               \result.get(i).getProiezione() == proiezione);
+      @*/
     public List<PostoProiezione> retrieveAllByProiezione(Proiezione proiezione) {
         List<PostoProiezione> postiProiezione = new ArrayList<>();
         String sql = "SELECT * FROM posto_proiezione WHERE id_proiezione = ?";
@@ -59,6 +83,15 @@ public class PostoProiezioneDAO {
         return postiProiezione;
     }
 
+    /*@ public normal_behavior
+      @   requires postoProiezione != null;
+      @   requires postoProiezione.getPosto() != null;
+      @   requires postoProiezione.getPosto().getSala() != null;
+      @   requires postoProiezione.getProiezione() != null;
+      @   requires idPrenotazione >= 0;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @*/
     public boolean occupaPosto(PostoProiezione postoProiezione, int idPrenotazione) {
         String updateSql = "UPDATE posto_proiezione SET stato = false WHERE id_sala = ? AND fila = ? AND numero = ? AND id_proiezione = ?";
         String insertSql = "INSERT INTO occupa (id_sala, fila, numero, id_proiezione, id_prenotazione) VALUES (?, ?, ?, ?, ?)";

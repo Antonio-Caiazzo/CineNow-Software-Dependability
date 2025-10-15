@@ -9,12 +9,28 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 public class ClienteDAO {
+    /*@ spec_public @*/
     private DataSource ds;
 
+
+    //@ public invariant ds != null;
+
+    /*@ public behavior
+      @   ensures ds != null;
+      @*/
     public ClienteDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+
+    /*@ public normal_behavior
+      @   requires cliente != null;
+      @   requires cliente.getEmail() != null;
+      @   requires cliente.getNome() != null;
+      @   requires cliente.getCognome() != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @*/
     public boolean create(Cliente cliente) {
         String sqlCliente = "INSERT INTO cliente (email, nome, cognome) VALUES (?, ?, ?)";
         try (Connection conn = ds.getConnection()) {
@@ -39,6 +55,14 @@ public class ClienteDAO {
         }
     }
 
+
+    /*@ public normal_behavior
+      @   requires email != null;
+      @   requires password != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures (\result != null) ==> (\result.getEmail() != null && \result.getEmail().equals(email));
+      @*/
     public Cliente retrieveByEmail(String email, String password) {
         String sql = "SELECT c.email, c.nome, c.cognome " +
                      "FROM cliente c " +

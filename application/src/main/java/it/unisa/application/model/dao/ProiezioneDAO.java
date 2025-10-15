@@ -12,12 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 public class ProiezioneDAO {
+    //@ spec_public
     private final DataSource ds;
 
+    /*@ public behavior
+      @   ensures ds != null;
+      @*/
     public ProiezioneDAO() {
         this.ds = DataSourceSingleton.getInstance();
     }
 
+    /*@ public normal_behavior
+      @   requires proiezione != null;
+      @   requires proiezione.getDataProiezione() != null;
+      @   requires proiezione.getFilmProiezione() != null;
+      @   requires proiezione.getSalaProiezione() != null;
+      @   requires proiezione.getOrarioProiezione() != null;
+      @   assignable proiezione.*;
+      @   ensures ds == \old(ds);
+      @   ensures \result ==> (proiezione.getId() >= 0);
+      @*/
     public boolean create(Proiezione proiezione) {
         String insertProiezioneSql = "INSERT INTO proiezione (data, id_film, id_sala, id_orario) VALUES (?, ?, ?, ?)";
         String insertPostiProiezioneSql = """
@@ -99,6 +113,12 @@ public class ProiezioneDAO {
         return false;
     }
 
+    /*@ public normal_behavior
+      @   requires id >= 0;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures (\result != null) ==> (\result.getId() == id);
+      @*/
     public Proiezione retrieveById(int id) {
         String sql = "SELECT * FROM proiezione WHERE id = ?";
         try (Connection connection = ds.getConnection();
@@ -126,6 +146,17 @@ public class ProiezioneDAO {
         return null;
     }
 
+    /*@ public normal_behavior
+      @   requires film != null && film.getId() >= 0;
+      @   requires sede != null && sede.getId() >= 0;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures \result != null;
+      @   ensures (\forall int i; 0 <= i && i < \result.size();
+      @               \result.get(i) != null &&
+      @               \result.get(i).getFilmProiezione() != null &&
+      @               \result.get(i).getFilmProiezione().getId() == film.getId());
+      @*/
     public List<Proiezione> retrieveByFilm(Film film, Sede sede) {
         String sql = """
             SELECT p.*, s.numero AS numero_sala, f.titolo AS titolo_film, f.durata AS durata_film, sl.ora_inizio AS orario
@@ -199,6 +230,12 @@ public class ProiezioneDAO {
         return proiezioni;
     }
 
+    /*@ public normal_behavior
+      @   requires sedeId >= 0;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures \result != null;
+      @*/
     public List<Proiezione> retrieveAllBySede(int sedeId) {
         List<Proiezione> proiezioni = new ArrayList<>();
         String sql = """
@@ -268,6 +305,18 @@ public class ProiezioneDAO {
     }
 
 
+    /*@ public normal_behavior
+      @   requires salaId >= 0;
+      @   requires slotId >= 0;
+      @   requires data != null;
+      @   assignable \nothing;
+      @   ensures ds == \old(ds);
+      @   ensures (\result != null) ==> (
+      @       \result.getSalaProiezione().getId() == salaId &&
+      @       \result.getOrarioProiezione().getId() == slotId &&
+      @       \result.getDataProiezione().equals(data)
+      @   );
+      @*/
     public Proiezione retrieveProiezioneBySalaSlotAndData(int salaId, int slotId, LocalDate data) {
         String sql = "SELECT * FROM proiezione WHERE id_sala = ? AND id_orario = ? AND data = ?";
         try (Connection connection = ds.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {

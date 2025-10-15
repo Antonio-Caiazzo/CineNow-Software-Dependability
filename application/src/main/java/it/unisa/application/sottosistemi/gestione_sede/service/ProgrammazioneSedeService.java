@@ -13,7 +13,15 @@ import java.util.stream.Collectors;
 
 public class ProgrammazioneSedeService {
     //@ spec_public
-    private final ProiezioneDAO proiezioneDAO = new ProiezioneDAO();
+    private final ProiezioneDAO proiezioneDAO;
+
+    public ProgrammazioneSedeService() {
+        this.proiezioneDAO = new ProiezioneDAO();
+    }
+
+    public ProgrammazioneSedeService(ProiezioneDAO proiezioneDAO) {
+        this.proiezioneDAO = proiezioneDAO;
+    }
 
     //@ public invariant proiezioneDAO != null;
     /**
