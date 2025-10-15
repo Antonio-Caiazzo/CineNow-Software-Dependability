@@ -17,7 +17,6 @@ public class SedeDAO {
     //@ public invariant ds != null;
 
     /*@ public normal_behavior
-      @   assignable ds;
       @   ensures ds != null;
       @*/
     public SedeDAO() {

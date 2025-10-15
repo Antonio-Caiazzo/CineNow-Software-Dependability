@@ -26,7 +26,8 @@ public class Posto {
       @   assignable \nothing;
       @   ensures \result == sala;
       @*/
-    public /*@ pure @*/ Sala getSala() { return sala; }
+    /*@ pure @*/
+    public Sala getSala() { return sala; }
 
     /*@ public normal_behavior
       @   assignable this.sala;
@@ -38,7 +39,8 @@ public class Posto {
       @   assignable \nothing;
       @   ensures \result == fila;
       @*/
-    public /*@ pure @*/ char getFila() { return fila; }
+    /*@ pure @*/
+    public char getFila() { return fila; }
 
     /*@ public normal_behavior
       @   assignable this.fila;
@@ -50,7 +52,8 @@ public class Posto {
       @   assignable \nothing;
       @   ensures \result == numero;
       @*/
-    public /*@ pure @*/ int getNumero() { return numero; }
+    /*@ pure @*/
+    public int getNumero() { return numero; }
 
     /*@ public normal_behavior
       @   assignable this.numero;

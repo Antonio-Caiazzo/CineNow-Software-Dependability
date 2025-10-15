@@ -23,7 +23,6 @@ public class Prenotazione {
       @   requires id >= 0;
       @   requires cliente != null;
       @   requires proiezione != null;
-      @   assignable this.*;
       @   ensures this.id == id;
       @   ensures this.cliente == cliente;
       @   ensures this.proiezione == proiezione;
@@ -40,13 +39,14 @@ public class Prenotazione {
       @   assignable \nothing;
       @   ensures \result == id;
       @*/
-    public /*@ pure @*/ int getId() {
+    /*@ pure @*/
+    public int getId() {
         return id;
     }
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable id;
+      @   assignable this.id;
       @   ensures this.id == id;
       @*/
     public void setId(int id) {
@@ -58,13 +58,14 @@ public class Prenotazione {
       @   assignable \nothing;
       @   ensures \result == proiezione;
       @*/
-    public /*@ pure @*/ Proiezione getProiezione() {
+    /*@ pure @*/
+    public Proiezione getProiezione() {
         return proiezione;
     }
 
     /*@ public normal_behavior
       @   requires proiezione != null;
-      @   assignable proiezione;
+      @   assignable this.proiezione;
       @   ensures this.proiezione == proiezione;
       @*/
     public void setProiezione(Proiezione proiezione) {
@@ -76,14 +77,15 @@ public class Prenotazione {
       @   assignable \nothing;
       @   ensures \result == postiPrenotazione;
       @*/
-    public /*@ pure @*/ List<PostoProiezione> getPostiPrenotazione() {
+    /*@ pure @*/
+    public List<PostoProiezione> getPostiPrenotazione() {
         return postiPrenotazione;
     }
 
     /*@ public normal_behavior
       @   requires postiProiezione != null;
       @   requires !postiProiezione.contains(null);
-      @   assignable postiPrenotazione;
+      @   assignable this.postiPrenotazione;
       @   ensures this.postiPrenotazione == postiProiezione;
       @*/
     public void setPostiPrenotazione(List<PostoProiezione> postiProiezione) {
@@ -95,13 +97,14 @@ public class Prenotazione {
       @   assignable \nothing;
       @   ensures \result == cliente;
       @*/
-    public /*@ pure @*/ Cliente getCliente() {
+    /*@ pure @*/
+    public Cliente getCliente() {
         return cliente;
     }
 
     /*@ public normal_behavior
       @   requires cliente != null;
-      @   assignable cliente;
+      @   assignable this.cliente;
       @   ensures this.cliente == cliente;
       @*/
     public void setCliente(Cliente cliente) {

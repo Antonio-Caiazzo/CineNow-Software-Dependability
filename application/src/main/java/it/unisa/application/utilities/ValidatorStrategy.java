@@ -19,7 +19,7 @@ public interface ValidatorStrategy {
       @   assignable \nothing;
       @   ensures \result ==> campo.matches(".*[<>\"%;()&].*");
       @*/
-    default boolean containsInvalidCharacters(String campo) {
+    default /*@ pure @*/ boolean containsInvalidCharacters(String campo) {
         String invalidCharactersPattern = "[<>\"%;()&]";
         return campo.matches(".*" + invalidCharactersPattern + ".*");
     }

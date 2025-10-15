@@ -24,7 +24,6 @@ public class AutenticazioneService {
      */
     /*@ public normal_behavior
       @   requires true;
-      @   assignable utenteDAO, clienteDAO;
       @   ensures this.utenteDAO != null;
       @   ensures this.clienteDAO != null;
       @*/
@@ -39,7 +38,6 @@ public class AutenticazioneService {
     /*@ public normal_behavior
       @   requires utenteDAOMock != null;
       @   requires clienteDAOMock != null;
-      @   assignable utenteDAO, clienteDAO;
       @   ensures this.utenteDAO == utenteDAOMock;
       @   ensures this.clienteDAO == clienteDAOMock;
       @*/

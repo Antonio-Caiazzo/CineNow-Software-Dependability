@@ -203,8 +203,11 @@ public class ProiezioneDAO {
                         proiezione.getDataProiezione().toString();
 
 
-                List<Proiezione> proiezioniPerChiave = uniqueProiezioni.getOrDefault(uniqueKey, new ArrayList<>());
-
+                List<Proiezione> proiezioniPerChiave = uniqueProiezioni.get(uniqueKey);
+                if (proiezioniPerChiave == null) {
+                    proiezioniPerChiave = new ArrayList<Proiezione>();
+                    uniqueProiezioni.put(uniqueKey, proiezioniPerChiave);
+                }
                 boolean aggiungiProiezione = true;
                 for (Proiezione existingProiezione : proiezioniPerChiave) {
                     int existingEndMinute = existingProiezione.getOrarioProiezione().getOraInizio().toLocalTime().toSecondOfDay() / 60
@@ -277,7 +280,10 @@ public class ProiezioneDAO {
                         proiezione.getSalaProiezione().getId() + "|" +
                         proiezione.getDataProiezione().toString();
 
-                List<Proiezione> proiezioniPerChiave = uniqueProiezioni.getOrDefault(uniqueKey, new ArrayList<>());
+                List</*@ non_null @*/ Proiezione> proiezioniPerChiave =
+                        uniqueProiezioni.getOrDefault(uniqueKey,
+                                new ArrayList</*@ non_null @*/ Proiezione>());
+
 
                 boolean aggiungiProiezione = true;
                 for (Proiezione existingProiezione : proiezioniPerChiave) {

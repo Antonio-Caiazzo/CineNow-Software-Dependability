@@ -22,7 +22,6 @@ public class Sede {
     //@ public invariant !sale.contains(null);
 
     /*@ public normal_behavior
-      @   assignable sale;
       @   ensures sale != null;
       @   ensures sale.isEmpty();
       @*/
@@ -31,7 +30,6 @@ public class Sede {
     }
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable id, sale;
       @   ensures this.id == id;
       @   ensures this.sale != null;
       @   ensures this.sale.isEmpty();
@@ -44,7 +42,6 @@ public class Sede {
       @   requires id >= 0;
       @   requires nome != null && !nome.isEmpty();
       @   requires indirizzo != null && !indirizzo.isEmpty();
-      @   assignable id, nome, indirizzo, sale;
       @   ensures this.id == id;
       @   ensures this.nome == nome;
       @   ensures this.indirizzo == indirizzo;
@@ -62,13 +59,14 @@ public class Sede {
       @   assignable \nothing;
       @   ensures \result == nome;
       @*/
-    public /*@ pure @*/ String getNome() {
+    /*@ pure @*/
+    public  String getNome() {
         return nome;
     }
 
     /*@ public normal_behavior
       @   requires nome != null && !nome.isEmpty();
-      @   assignable nome;
+      @   assignable this.nome;
       @   ensures this.nome == nome;
       @*/
     public void setNome(String nome) {
@@ -79,13 +77,14 @@ public class Sede {
       @   assignable \nothing;
       @   ensures \result == indirizzo;
       @*/
-    public /*@ pure @*/ String getIndirizzo() {
+    /*@ pure @*/
+    public String getIndirizzo() {
         return indirizzo;
     }
 
     /*@ public normal_behavior
       @   requires indirizzo != null && !indirizzo.isEmpty();
-      @   assignable indirizzo;
+      @   assignable this.indirizzo;
       @   ensures this.indirizzo == indirizzo;
       @*/
     public void setIndirizzo(String indirizzo) {
@@ -96,13 +95,14 @@ public class Sede {
       @   assignable \nothing;
       @   ensures \result == id;
       @*/
-    public /*@ pure @*/ int getId() {
+    /*@ pure @*/
+    public int getId() {
         return id;
     }
 
     /*@ public normal_behavior
       @   requires id >= 0;
-      @   assignable id;
+      @   assignable this.id;
       @   ensures this.id == id;
       @*/
     public void setId(int id) {
@@ -113,14 +113,15 @@ public class Sede {
       @   assignable \nothing;
       @   ensures \result == sale;
       @*/
-    public /*@ pure @*/ Set<Sala> getSale() {
+    /*@ pure @*/
+    public Set<Sala> getSale() {
         return sale;
     }
 
     /*@ public normal_behavior
       @   requires sale != null;
       @   requires !sale.contains(null);
-      @   assignable sale;
+      @   assignable this.sale;
       @   ensures this.sale == sale;
       @*/
     public void setSale(Set<Sala> sale) {

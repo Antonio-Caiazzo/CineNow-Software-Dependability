@@ -25,7 +25,6 @@ public class RegistrazioneService {
      */
     /*@ public normal_behavior
       @   requires true;
-      @   assignable validationManager, utenteDAO, clienteDAO, validationManager.*;
       @   ensures this.validationManager != null;
       @   ensures this.utenteDAO != null;
       @   ensures this.clienteDAO != null;
@@ -47,7 +46,6 @@ public class RegistrazioneService {
     /*@ public normal_behavior
       @   requires utenteDAOMock != null;
       @   requires clienteDAOMock != null;
-      @   assignable validationManager, utenteDAO, clienteDAO, validationManager.*;
       @   ensures this.validationManager != null;
       @   ensures this.utenteDAO == utenteDAOMock;
       @   ensures this.clienteDAO == clienteDAOMock;
